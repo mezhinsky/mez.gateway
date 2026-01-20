@@ -20,7 +20,7 @@ export interface UserInfo {
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
   private readonly jwtSecret: string;
-  private readonly memBackendUrl: string;
+  private readonly mezAuthUrl: string;
   private readonly internalSecret: string;
 
   constructor(
@@ -28,7 +28,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {
     this.jwtSecret = this.configService.getOrThrow<string>('JWT_SECRET');
-    this.memBackendUrl = this.configService.getOrThrow<string>('MEM_BACKEND_URL');
+    this.mezAuthUrl = this.configService.getOrThrow<string>('MEZ_AUTH_URL');
     this.internalSecret = this.configService.getOrThrow<string>('INTERNAL_SERVICE_SECRET');
   }
 
@@ -59,11 +59,11 @@ export class AuthService {
   }
 
   /**
-   * Fetch user info from mem.backend internal endpoint
+   * Fetch user info from mez.auth internal endpoint
    */
   async fetchUserInfo(userId: string): Promise<UserInfo> {
     try {
-      const response = await fetch(`${this.memBackendUrl}/internal/users/${userId}`, {
+      const response = await fetch(`${this.mezAuthUrl}/internal/users/${userId}`, {
         headers: {
           'x-internal-secret': this.internalSecret,
         },

@@ -19,10 +19,21 @@ import { ProxyMiddleware } from './proxy/proxy.middleware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // Auth middleware only for /tg/* routes (tg.publisher needs user headers)
+    // Auth middleware for protected routes
     consumer
       .apply(AuthMiddleware)
-      .forRoutes({ path: 'tg/*', method: RequestMethod.ALL });
+      .forRoutes(
+        { path: 'tg/*', method: RequestMethod.ALL },
+        { path: 'users', method: RequestMethod.ALL },
+        { path: 'users/*', method: RequestMethod.ALL },
+        { path: 'articles', method: RequestMethod.ALL },
+        { path: 'articles/*', method: RequestMethod.ALL },
+        { path: 'tags', method: RequestMethod.ALL },
+        { path: 'tags/*', method: RequestMethod.ALL },
+        { path: 'assets', method: RequestMethod.ALL },
+        { path: 'assets/*', method: RequestMethod.ALL },
+        { path: 'uploads/*', method: RequestMethod.ALL },
+      );
 
     // Proxy middleware for all routes except /health
     consumer
