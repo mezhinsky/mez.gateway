@@ -26,10 +26,10 @@ export class AppModule implements NestModule {
       .exclude(
         // Public articles
         { path: 'public/articles', method: RequestMethod.GET },
-        { path: 'public/articles/*', method: RequestMethod.GET },
+        { path: 'public/articles/(.*)', method: RequestMethod.GET },
         // Public tags (read-only)
         { path: 'tags', method: RequestMethod.GET },
-        { path: 'tags/by-slug/*', method: RequestMethod.GET },
+        { path: 'tags/by-slug/(.*)', method: RequestMethod.GET },
       )
       .forRoutes(
         { path: 'tg/*', method: RequestMethod.ALL },
